@@ -1,26 +1,27 @@
 package io.github.janbarari.starwars.presentation.picture
 
 import android.os.Bundle
-import android.transition.TransitionInflater
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.view.ViewCompat
 import androidx.databinding.DataBindingUtil
 import androidx.navigation.fragment.findNavController
 import io.github.janbarari.starwars.R
 import io.github.janbarari.starwars.databinding.FragmentPictureBinding
 import io.github.janbarari.starwars.presentation.base.BaseFragment
 import io.github.janbarari.starwars.presentation.common.util.imageloder.ImageLoaderContext
-import io.github.janbarari.starwars.presentation.planet.PlanetFragmentDirections
 
 const val PICTURE_ARGUMENT_KEY = "picture_url"
 
-class PictureFragment: BaseFragment() {
+class PictureFragment : BaseFragment() {
 
     private lateinit var binding: FragmentPictureBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_picture, container, false)
         binding.lifecycleOwner = this
         return binding.root

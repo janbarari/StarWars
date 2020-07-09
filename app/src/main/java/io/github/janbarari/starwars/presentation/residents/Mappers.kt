@@ -17,6 +17,23 @@ fun Resident.toGenericViewModel(): GenericViewModel {
         this.homeWorld,
         this.created,
         this.edited,
+        this.getImageUrl()
+    )
+}
+
+fun ResidentAdapterModel.toResident(): Resident {
+    return Resident(
+        this.name,
+        this.height,
+        this.mass,
+        this.hairColor,
+        this.skinColor,
+        this.eyeColor,
+        this.birthYear,
+        this.gender,
+        this.homeWorld,
+        this.created,
+        this.edited,
         this.imageUrl
     )
 }

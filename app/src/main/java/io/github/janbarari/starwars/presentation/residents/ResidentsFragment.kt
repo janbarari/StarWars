@@ -24,7 +24,7 @@ import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
-const val RESIDENTS_PLANET_ARGUMENT_KEY = "planet"
+const val PLANET_ARGUMENT_KEY = "planet"
 
 class ResidentsFragment : BaseFragment(), KodeinAware, GenericUriListener {
 
@@ -49,18 +49,39 @@ class ResidentsFragment : BaseFragment(), KodeinAware, GenericUriListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        val planet: Planet? = arguments?.getSerializable(RESIDENTS_PLANET_ARGUMENT_KEY) as Planet
+        val planet: Planet? = arguments?.getSerializable(PLANET_ARGUMENT_KEY) as Planet
         if (planet == null) {
             findNavController().popBackStack()
             return
         }
 
-        viewModel.fetchResidents(planet)
-
         val residents: ArrayList<GenericViewModel> = arrayListOf()
+        val adapter = GenericAdapter(requireContext(), residents, this@ResidentsFragment)
+        adapter.addView(
+            ResidentViewHolder::class.java,
+            ResidentAdapterModel::class.java,
+            R.layout.adapter_cell_resident
+        )
+        binding.recyclerview.apply {
+            setHasFixedSize(true)
+            this.layoutManager = GridLayoutManager(context, 2)
+            this.adapter = adapter
+        }
+        if (viewModel.recyclerViewState != null) {
+            (binding.recyclerview.layoutManager as LinearLayoutManager).onRestoreInstanceState(
+                viewModel.recyclerViewState
+            )
+        }
+
+        viewModel.fetchResidents(planet)
         viewModel.residents.observe(viewLifecycleOwner, Observer {
             residents.add(it.toGenericViewModel())
-            initializeRecyclerView(residents)
+            adapter.notifyItemInserted(residents.size)
+        })
+
+        viewModel.error.observe(viewLifecycleOwner, Observer {
+            binding.error.text = it.message
+            binding.progress.visibility = View.GONE
         })
 
         binding.close.setOnClickListener {
@@ -68,45 +89,18 @@ class ResidentsFragment : BaseFragment(), KodeinAware, GenericUriListener {
         }
     }
 
-    private fun initializeRecyclerView(residents: ArrayList<GenericViewModel>) {
-        context?.let {
-            binding.recyclerview.apply {
-                setHasFixedSize(false)
-                postponeEnterTransition()
-                viewTreeObserver.addOnPreDrawListener {
-                    startPostponedEnterTransition()
-                    true
-                }
-                val adapter = GenericAdapter(it, residents, this@ResidentsFragment)
-                adapter.addView(
-                    ResidentViewHolder::class.java,
-                    ResidentAdapterModel::class.java,
-                    R.layout.adapter_cell_resident
-                )
-                this.layoutManager = GridLayoutManager(it, 2)
-                this.adapter = adapter
-            }
-            if (viewModel.recyclerViewState != null) {
-                (binding.recyclerview.layoutManager as LinearLayoutManager).onRestoreInstanceState(
-                    viewModel.recyclerViewState
-                )
-            }
-        }
-    }
-
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.disposeResidents()
         viewModel.recyclerViewState = binding.recyclerview.layoutManager?.onSaveInstanceState()
     }
 
     override fun onClick(event: Any) {
         val clickedEvent = event as ResidentAdapterModel
-//            val directions = SearchFragmentDirections.viewDrinkDetails(
-//                clickedEvent.viewModel.idDrink!!,
-//                clickedEvent.viewModel.strDrinkThumb!!,
-//                clickedEvent.viewModel.strDrink!!
-//            )
-//            findNavController().navigate(directions, extras)
+        val directions = ResidentsFragmentDirections.residentDirection(
+            clickedEvent.toResident()
+        )
+        findNavController().navigate(directions)
     }
 
 }

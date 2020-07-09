@@ -5,6 +5,7 @@ import io.fabric.sdk.android.Fabric
 import io.github.janbarari.starwars.data.network.Api
 import io.github.janbarari.starwars.data.network.NetworkConnectionInterceptor
 import io.github.janbarari.starwars.data.repository.PlanetRepository
+import io.github.janbarari.starwars.data.repository.ResidentRepository
 import io.github.janbarari.starwars.presentation.host.HostViewModelFactory
 import io.github.janbarari.starwars.presentation.planet.PlanetViewModelFactory
 import io.github.janbarari.starwars.presentation.resident.ResidentViewModelFactory
@@ -19,17 +20,18 @@ import org.kodein.di.generic.singleton
 
 const val NETWORK_BASE_URL = "https://private-anon-9c59348131-starwars2.apiary-mock.com/"
 
-class Application: Application(), KodeinAware {
+class Application : Application(), KodeinAware {
 
     override val kodein: Kodein = Kodein.lazy {
         import(androidXModule(this@Application))
         bind() from singleton { NetworkConnectionInterceptor(instance()) }
         bind() from singleton { Api(instance()) }
         bind() from singleton { PlanetRepository(instance()) }
+        bind() from singleton { ResidentRepository(instance()) }
         bind() from provider { HostViewModelFactory() }
         bind() from provider { PlanetViewModelFactory(instance()) }
         bind() from provider { ResidentsViewModelFactory(instance()) }
-        bind() from provider { ResidentViewModelFactory(instance()) }
+        bind() from provider { ResidentViewModelFactory() }
     }
 
     override fun onCreate() {

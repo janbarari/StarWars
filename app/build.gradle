@@ -68,7 +68,7 @@ dependencies {
         exclude module: 'recyclerview-v7'
     }
 
-    //Retrofit and Gson (Network & JSON Parser)
+    //Retrofit and GSON(Network & JSON Parser)
     implementation 'com.squareup.retrofit2:retrofit:2.7.1'
     implementation 'com.squareup.retrofit2:converter-gson:2.7.1'
     implementation 'com.squareup.retrofit2:adapter-rxjava2:2.7.1'
@@ -80,7 +80,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-extensions:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
 
-    //Kodein (Dependency Injector)
+    //Kodein(Dependency Injector)
     implementation 'org.kodein.di:kodein-di-generic-jvm:6.2.1'
     implementation 'org.kodein.di:kodein-di-framework-android-x:6.2.1'
 

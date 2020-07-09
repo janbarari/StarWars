@@ -1,5 +1,6 @@
 package io.github.janbarari.starwars.presentation.resident
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -11,6 +12,7 @@ import io.github.janbarari.starwars.R
 import io.github.janbarari.starwars.databinding.FragmentResidentBinding
 import io.github.janbarari.starwars.domain.Resident
 import io.github.janbarari.starwars.presentation.base.BaseFragment
+import io.github.janbarari.starwars.presentation.common.util.imageloder.ImageLoaderContext
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
@@ -38,6 +40,7 @@ class ResidentFragment : BaseFragment(), KodeinAware {
         return binding.root
     }
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
@@ -47,9 +50,22 @@ class ResidentFragment : BaseFragment(), KodeinAware {
             return
         }
 
-        binding.close.setOnClickListener {
-            findNavController().popBackStack()
+        with(binding) {
+            title.text = resident.name
+            ImageLoaderContext.loader.bind(thumbnail, R.drawable.placeholder, resident.getImageUrl())
+            description.text =
+                "birthYear: ${resident.birthYear} \n" +
+                        "Eye Color: ${resident.eyeColor} \n" +
+                        "Gender: ${resident.gender} \n" +
+                        "Hair Color: ${resident.hairColor} \n" +
+                        "Mass: ${resident.mass} \n" +
+                        "Skin Color: ${resident.skinColor} \n"
+            ImageLoaderContext.loader.bind(liveImage, resident.getImageUrl())
+            close.setOnClickListener {
+                findNavController().popBackStack()
+            }
         }
+
     }
 
 }

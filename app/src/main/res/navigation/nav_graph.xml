@@ -36,7 +36,7 @@
         <argument
             android:name="picture_url"
             app:argType="string"
-            app:nullable="true"/>
+            app:nullable="true" />
 
     </fragment>
 

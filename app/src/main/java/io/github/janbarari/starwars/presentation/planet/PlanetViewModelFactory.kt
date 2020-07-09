@@ -6,6 +6,7 @@ import io.github.janbarari.starwars.data.repository.PlanetRepository
 
 class PlanetViewModelFactory(private val planetRepository: PlanetRepository): ViewModelProvider.Factory {
 
+    @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel?> create(modelClass: Class<T>): T {
         return PlanetViewModel(planetRepository) as T
     }

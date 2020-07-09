@@ -16,8 +16,7 @@ data class Planet(
     val created: String?,
     val edited: String?,
     private val imageUrl: String?,
-    val likes: Int
-): Serializable {
+    val likes: Int): Serializable {
 
     fun getImageUrl(): String? {
         return imageUrl?.replace("http://", "https://")

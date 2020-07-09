@@ -9,9 +9,6 @@ import io.github.janbarari.starwars.data.network.exception.NoInternetConnectionE
 import okhttp3.Interceptor
 import okhttp3.Response
 
-/**
- * Check is device internet is available, to prevent crash the OkHttp
- */
 class NetworkConnectionInterceptor(context: Context) : Interceptor {
 
     private val applicationContext = context.applicationContext

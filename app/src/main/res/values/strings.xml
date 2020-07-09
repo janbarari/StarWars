@@ -4,4 +4,5 @@
     <string name="no_internet_connection_message">Make sure you have an active data connection!</string>
     <string name="like">like</string>
     <string name="image">image</string>
+    <string name="show_residents">Show Residents</string>
 </resources>

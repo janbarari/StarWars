@@ -23,7 +23,9 @@ class PlanetViewModel(private val planetRepository: PlanetRepository) : ViewMode
     }
 
     private fun fetchKamino() {
-        observableRequest(planetRepository.getPlanet(KAMINO_PLANET_ID), object : SafeRequestCallback<Planet> {
+        observableRequest(
+            planetRepository.fetchPlanet(KAMINO_PLANET_ID),
+            object : SafeRequestCallback<Planet> {
                 override fun onSuccess(response: Planet) {
                     kaminoPlanet.postValue(response)
                     progressState.postValue(false)
@@ -36,19 +38,22 @@ class PlanetViewModel(private val planetRepository: PlanetRepository) : ViewMode
     }
 
     fun like() {
-        observableRequest(planetRepository.likePlanet(KAMINO_PLANET_ID), object : SafeRequestCallback<Int> {
-            override fun onSuccess(response: Int) {
-                like.postValue(
-                    LikeModel(
-                        true,
-                        response
+        observableRequest(
+            planetRepository.likePlanet(KAMINO_PLANET_ID),
+            object : SafeRequestCallback<Int> {
+                override fun onSuccess(response: Int) {
+                    like.postValue(
+                        LikeModel(
+                            true,
+                            response
+                        )
                     )
-                )
-            }
-            override fun onFailed(exception: Throwable) {
-                error.postValue(LikeException(exception.message!!))
-            }
-        })
+                }
+
+                override fun onFailed(exception: Throwable) {
+                    error.postValue(LikeException(exception.message!!))
+                }
+            })
     }
 
 }
