@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/planetFragment">
+
+    <fragment
+        android:id="@+id/planetFragment"
+        android:name="io.github.janbarari.starwars.presentation.planet.PlanetFragment"
+        tools:layout="@layout/fragment_planet">
+
+        <action
+            android:id="@+id/pictureDirection"
+            app:destination="@id/pictureFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/pictureFragment"
+        android:name="io.github.janbarari.starwars.presentation.picture.PictureFragment"
+        tools:layout="@layout/fragment_picture">
+
+        <argument
+            android:name="picture_url"
+            app:argType="string" />
+
+    </fragment>
+
+</navigation>
