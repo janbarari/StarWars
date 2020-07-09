@@ -1,7 +1,7 @@
 # StarWars
  ![](starwars.gif)
 
-This project gets information form an api and uses the following technologies:
+This project fetch information form an api, and uses the following technologies:
 
   - Kotlin
   - Clean Architecture
@@ -15,5 +15,5 @@ This project gets information form an api and uses the following technologies:
   - ViewModel
   - Kodein (Dependency Injector)
   - Firebase 
- 
-#[Download APK](https://github.com/janbarari/starwars/starwars.apk)
+
+[Download APK](https://github.com/janbarari/starwars/starwars.apk)
