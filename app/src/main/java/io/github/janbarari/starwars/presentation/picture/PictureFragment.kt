@@ -36,11 +36,13 @@ class PictureFragment : BaseFragment() {
             return
         }
 
-        ImageLoaderContext.loader.bind(binding.photo, R.drawable.placeholder, pictureUrl)
-
-        binding.close.setOnClickListener {
-            findNavController().popBackStack()
+        with(binding) {
+            ImageLoaderContext.loader.bind(photo, R.drawable.placeholder, pictureUrl)
+            close.setOnClickListener {
+                findNavController().popBackStack()
+            }
         }
+
     }
 
 }

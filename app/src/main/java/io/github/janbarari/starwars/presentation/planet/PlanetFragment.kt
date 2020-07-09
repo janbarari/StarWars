@@ -88,20 +88,26 @@ class PlanetFragment : BaseFragment(), KodeinAware {
             if (it is LikeException) {
                 Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
             } else {
-                binding.error.apply {
-                    visibility = View.VISIBLE
-                    text = it.message
-                }
-                binding.progress.apply {
-                    visibility = View.GONE
+                with(binding) {
+                    error.apply {
+                        visibility = View.VISIBLE
+                        text = it.message
+                    }
+                    progress.apply {
+                        visibility = View.GONE
+                    }
                 }
             }
         })
 
         viewModel.like.observe(viewLifecycleOwner, Observer {
-            binding.like.setImageResource(R.drawable.thumb_up)
-            binding.like.isClickable = false
-            binding.likeCount.text = it.likes.toString()
+            with(binding) {
+                like.apply {
+                    setImageResource(R.drawable.thumb_up)
+                    isClickable = false
+                }
+                likeCount.text = it.likes.toString()
+            }
         })
 
     }

@@ -91,7 +91,6 @@ class ResidentsFragment : BaseFragment(), KodeinAware, GenericUriListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.disposeResidents()
         viewModel.recyclerViewState = binding.recyclerview.layoutManager?.onSaveInstanceState()
     }
 
