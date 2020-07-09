@@ -2,25 +2,25 @@ package io.github.janbarari.starwars.presentation.planet
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.databinding.DataBindingUtil
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.FragmentNavigatorExtras
+import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import io.github.janbarari.starwars.R
+import io.github.janbarari.starwars.data.network.exception.LikeException
 import io.github.janbarari.starwars.databinding.FragmentPlanetBinding
 import io.github.janbarari.starwars.presentation.base.BaseFragment
 import io.github.janbarari.starwars.presentation.common.util.imageloder.ImageLoaderContext
-import io.github.janbarari.starwars.presentation.picture.PictureFragmentArgs
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.kodein
 import org.kodein.di.generic.instance
 
-class PlanetFragment: BaseFragment(), KodeinAware {
+class PlanetFragment : BaseFragment(), KodeinAware {
 
     override val kodein: Kodein by kodein()
     private val factory: PlanetViewModelFactory by instance<PlanetViewModelFactory>()
@@ -28,9 +28,13 @@ class PlanetFragment: BaseFragment(), KodeinAware {
     private lateinit var viewModel: PlanetViewModel
     private lateinit var binding: FragmentPlanetBinding
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View? {
         binding = DataBindingUtil.inflate(inflater, R.layout.fragment_planet, container, false)
-        viewModel = factory.create(PlanetViewModel::class.java)
+        viewModel = ViewModelProvider(this, factory).get(PlanetViewModel::class.java)
         binding.lifecycleOwner = this
         binding.viewModel = viewModel
         return binding.root
@@ -42,33 +46,62 @@ class PlanetFragment: BaseFragment(), KodeinAware {
 
         viewModel.kaminoPlanet.observe(viewLifecycleOwner, Observer { planet ->
             with(binding) {
-                ImageLoaderContext.loader.bind(thumbnail, R.drawable.placeholder, planet.imageUrl.replace("http", "https"))
-                title.text = planet.name
+                ImageLoaderContext.loader.bind(
+                    thumbnail,
+                    R.drawable.placeholder,
+                    planet.getImageUrl()
+                )
+                ImageLoaderContext.loader.bind(liveImage, planet.getImageUrl())
+                title.text = planet.getName()
                 description.text =
-                    """Climate: ${planet.climate} \n 
-                       Population: ${planet.population} \n
-                       Surface Water: ${planet.surfaceWater} \n
-                       Gravity: ${planet.gravity} \n
-                       Diameter: ${planet.diameter} \n
-                       Terrian: ${planet.terrain} \n
-                       Orbital Period: ${planet.orbitalPeriod} \n
-                       Rotation Period: ${planet.rotationPeriod}"""
+                    "Climate: ${planet.climate} \n" +
+                            "Population: ${planet.population} \n" +
+                            "Surface Water: ${planet.surfaceWater} \n" +
+                            "Gravity: ${planet.gravity} \n" +
+                            "Diameter: ${planet.diameter} \n" +
+                            "Terrian: ${planet.terrain} \n" +
+                            "Orbital Period: ${planet.orbitalPeriod} \n" +
+                            "Rotation Period: ${planet.rotationPeriod}"
+
                 residents.setOnClickListener {
-                    val residents = planet.residents
+                    val direction = PlanetFragmentDirections.residentsDirection(
+                        planet
+                    )
+                    findNavController().navigate(direction)
                 }
-                Log.e("photo", planet.imageUrl.replace("http", "https"))
+
                 thumbnail.setOnClickListener {
                     val directions = PlanetFragmentDirections.pictureDirection(
-                        planet.imageUrl
+                        planet.getImageUrl()
                     )
-                    val extras = FragmentNavigatorExtras(thumbnail to getString(R.string.planetImage_to_pictureImage))
-                    findNavController().navigate(directions, extras)
+                    findNavController().navigate(directions)
                 }
+
+                like.setOnClickListener {
+                    viewModel!!.like()
+                }
+
             }
         })
 
         viewModel.error.observe(viewLifecycleOwner, Observer {
+            if (it is LikeException) {
+                Toast.makeText(this.context, it.message, Toast.LENGTH_SHORT).show()
+            } else {
+                binding.error.apply {
+                    visibility = View.VISIBLE
+                    text = it.message
+                }
+                binding.progress.apply {
+                    visibility = View.GONE
+                }
+            }
+        })
 
+        viewModel.like.observe(viewLifecycleOwner, Observer {
+            binding.like.setImageResource(R.drawable.thumb_up)
+            binding.like.isClickable = false
+            binding.likeCount.text = it.likes.toString()
         })
 
     }

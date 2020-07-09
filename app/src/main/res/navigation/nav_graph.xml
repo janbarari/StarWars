@@ -16,7 +16,15 @@
             app:enterAnim="@anim/slide_in_right"
             app:exitAnim="@anim/slide_out_left"
             app:popEnterAnim="@anim/slide_in_left"
-            app:popExitAnim="@anim/slide_out_right"/>
+            app:popExitAnim="@anim/slide_out_right" />
+
+        <action
+            android:id="@+id/residentsDirection"
+            app:destination="@id/residentsFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
 
     </fragment>
 
@@ -27,7 +35,38 @@
 
         <argument
             android:name="picture_url"
-            app:argType="string" />
+            app:argType="string"
+            app:nullable="true"/>
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/residentsFragment"
+        android:name="io.github.janbarari.starwars.presentation.residents.ResidentsFragment"
+        tools:layout="@layout/fragment_residents">
+
+        <argument
+            android:name="planet"
+            app:argType="io.github.janbarari.starwars.domain.Planet" />
+
+        <action
+            android:id="@+id/residentDirection"
+            app:destination="@id/residentFragment"
+            app:enterAnim="@anim/slide_in_right"
+            app:exitAnim="@anim/slide_out_left"
+            app:popEnterAnim="@anim/slide_in_left"
+            app:popExitAnim="@anim/slide_out_right" />
+
+    </fragment>
+
+    <fragment
+        android:id="@+id/residentFragment"
+        android:name="io.github.janbarari.starwars.presentation.resident.ResidentFragment"
+        tools:layout="@layout/fragment_resident">
+
+        <argument
+            android:name="resident"
+            app:argType="io.github.janbarari.starwars.domain.Resident" />
 
     </fragment>
 

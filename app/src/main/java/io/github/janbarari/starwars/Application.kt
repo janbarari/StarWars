@@ -7,6 +7,8 @@ import io.github.janbarari.starwars.data.network.NetworkConnectionInterceptor
 import io.github.janbarari.starwars.data.repository.PlanetRepository
 import io.github.janbarari.starwars.presentation.host.HostViewModelFactory
 import io.github.janbarari.starwars.presentation.planet.PlanetViewModelFactory
+import io.github.janbarari.starwars.presentation.resident.ResidentViewModelFactory
+import io.github.janbarari.starwars.presentation.residents.ResidentsViewModelFactory
 import org.kodein.di.Kodein
 import org.kodein.di.KodeinAware
 import org.kodein.di.android.x.androidXModule
@@ -26,6 +28,8 @@ class Application: Application(), KodeinAware {
         bind() from singleton { PlanetRepository(instance()) }
         bind() from provider { HostViewModelFactory() }
         bind() from provider { PlanetViewModelFactory(instance()) }
+        bind() from provider { ResidentsViewModelFactory(instance()) }
+        bind() from provider { ResidentViewModelFactory(instance()) }
     }
 
     override fun onCreate() {

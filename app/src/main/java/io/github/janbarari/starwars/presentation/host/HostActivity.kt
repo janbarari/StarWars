@@ -1,7 +1,9 @@
 package io.github.janbarari.starwars.presentation.host
 
 import android.os.Bundle
+import android.view.WindowManager
 import androidx.databinding.DataBindingUtil
+import androidx.navigation.ActivityNavigator
 import io.github.janbarari.starwars.R
 import io.github.janbarari.starwars.databinding.ActivityHostBinding
 import io.github.janbarari.starwars.presentation.base.BaseActivity
@@ -20,6 +22,12 @@ class HostActivity : BaseActivity(), KodeinAware {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        setWindowFlag(
+            WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS or WindowManager.LayoutParams.FLAG_TRANSLUCENT_NAVIGATION,
+            true
+        )
+
         binding = DataBindingUtil.setContentView(this, R.layout.activity_host)
         viewModel = factory.create(HostViewModel::class.java)
         binding.lifecycleOwner = this

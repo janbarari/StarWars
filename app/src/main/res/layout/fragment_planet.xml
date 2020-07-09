@@ -12,118 +12,155 @@
             type="io.github.janbarari.starwars.presentation.planet.PlanetViewModel" />
     </data>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:clipToPadding="false"
-        android:paddingLeft="24dp"
-        android:paddingTop="30dp"
-        android:paddingRight="24dp"
-        android:paddingBottom="30dp">
+        android:layout_height="match_parent">
+
+        <com.flaviofaria.kenburnsview.KenBurnsView
+            android:id="@+id/live_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
 
         <ProgressBar
             android:id="@+id/progress"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:visibility="@{viewModel.progressState?View.VISIBLE:View.GONE}"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <ImageView
-            android:id="@+id/thumbnail"
-            android:layout_width="128dp"
-            android:layout_height="128dp"
-            android:contentDescription="@string/image"
-            android:visibility="@{viewModel.progressState?View.GONE:View.VISIBLE}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            android:transitionName="@string/planetImage_to_pictureImage"/>
+            android:layout_gravity="center"
+            android:visibility="@{viewModel.progressState?View.VISIBLE:View.GONE}" />
 
         <TextView
-            android:id="@+id/title"
+            android:id="@+id/error"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             android:fontFamily="@font/roboto_condensed_bold"
-            android:paddingLeft="16dp"
-            android:paddingRight="16dp"
-            android:textColor="@android:color/black"
-            android:textSize="28sp"
-            android:visibility="@{viewModel.progressState?View.GONE:View.VISIBLE}"
-            app:layout_constraintLeft_toRightOf="@id/thumbnail"
-            app:layout_constraintTop_toTopOf="parent"
-            tools:text="Kamino Planet" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
             android:gravity="center"
-            android:orientation="horizontal"
-            app:layout_constraintLeft_toRightOf="@id/thumbnail"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/title">
-
-            <TextView
-                android:id="@+id/like_count"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/roboto_condensed_bold"
-                android:gravity="center"
-                android:textColor="@color/base0"
-                android:textSize="20sp"
-                android:visibility="gone" />
-
-            <ImageButton
-                android:id="@+id/like"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:background="@color/transparent"
-                android:contentDescription="@string/like"
-                android:padding="8dp"
-                android:src="@drawable/thumb_up_outline"
-                android:tint="@color/base0"
-                android:visibility="@{viewModel.progressState?View.GONE:View.VISIBLE}" />
-
-        </LinearLayout>
-
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:fontFamily="@font/roboto_condensed_bold"
-            android:lineSpacingExtra="8dp"
-            android:textColor="@android:color/black"
+            android:maxWidth="320dp"
+            android:textColor="@color/base100"
             android:textSize="18sp"
-            android:visibility="@{viewModel.progressState?View.GONE:View.VISIBLE}"
-            app:layout_constraintLeft_toLeftOf="parent"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/thumbnail" />
+            android:visibility="gone"
+            tools:text="No Internet Connection available!" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/residents"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="24dp"
-            android:visibility="@{viewModel.progressState?View.GONE:View.VISIBLE}"
-            app:cardBackgroundColor="@color/base0"
-            app:cardCornerRadius="24dp"
-            app:layout_constraintTop_toBottomOf="@id/description">
+            android:layout_gravity="center"
+            android:clipToPadding="false"
+            android:paddingLeft="24dp"
+            android:paddingTop="30dp"
+            android:paddingRight="24dp"
+            android:paddingBottom="30dp"
+            android:visibility="@{viewModel.progressState?View.GONE:View.VISIBLE}">
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/thumbnail_card"
+                android:layout_width="116dp"
+                android:layout_height="116dp"
+                app:cardCornerRadius="16dp"
+                app:cardElevation="4dp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <ImageView
+                    android:id="@+id/thumbnail"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="true"
+                    android:contentDescription="@string/image"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground" />
+
+            </androidx.cardview.widget.CardView>
 
             <TextView
+                android:id="@+id/title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
                 android:fontFamily="@font/roboto_condensed_bold"
-                android:padding="14dp"
-                android:text="Show Resident's"
+                android:paddingLeft="16dp"
+                android:paddingRight="16dp"
                 android:textColor="@color/base100"
-                android:textSize="17sp" />
+                android:textSize="32sp"
+                app:layout_constraintLeft_toRightOf="@id/thumbnail_card"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Kamino Planet" />
 
-        </androidx.cardview.widget.CardView>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                android:gravity="right"
+                android:orientation="horizontal"
+                app:layout_constraintLeft_toRightOf="@id/thumbnail_card"
+                app:layout_constraintTop_toBottomOf="@id/title">
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                <TextView
+                    android:id="@+id/like_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:fontFamily="@font/roboto_condensed_bold"
+                    android:gravity="center"
+                    android:textColor="@color/base100"
+                    android:textSize="18sp"
+                    tools:text="1,000" />
+
+                <ImageButton
+                    android:id="@+id/like"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
+                    android:background="@color/transparent"
+                    android:clickable="true"
+                    android:contentDescription="@string/like"
+                    android:focusable="true"
+                    android:foreground="?android:attr/selectableItemBackground"
+                    android:padding="6dp"
+                    android:src="@drawable/thumb_up_outline"
+                    android:tint="@color/base100" />
+
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="56dp"
+                android:fontFamily="@font/roboto_condensed_bold"
+                android:lineSpacingExtra="16dp"
+                android:paddingLeft="2dp"
+                android:paddingRight="2dp"
+                android:textColor="@color/base100"
+                android:textSize="20sp"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/thumbnail_card" />
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/residents"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="56dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:foreground="?android:attr/selectableItemBackground"
+                app:cardBackgroundColor="@color/base100"
+                app:cardCornerRadius="16dp"
+                app:layout_constraintTop_toBottomOf="@id/description">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:fontFamily="@font/roboto_condensed_bold"
+                    android:padding="12dp"
+                    android:text="Show Resident's"
+                    android:textColor="@color/base0"
+                    android:textSize="19sp" />
+
+            </androidx.cardview.widget.CardView>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </FrameLayout>
 
 </layout>
