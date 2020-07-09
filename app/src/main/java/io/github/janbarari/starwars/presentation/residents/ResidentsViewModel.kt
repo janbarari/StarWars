@@ -53,8 +53,4 @@ class ResidentsViewModel(private val residentRepository: ResidentRepository) : V
         }
     }
 
-    fun disposeResidents() {
-        compositeDisposable.dispose()
-    }
-
 }

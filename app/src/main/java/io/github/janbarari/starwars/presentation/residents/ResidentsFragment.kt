@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import io.github.janbarari.genericrecyclerview.adapter.GenericAdapter
 import io.github.janbarari.genericrecyclerview.listener.GenericUriListener
-import io.github.janbarari.genericrecyclerview.model.GenericViewModel
 import io.github.janbarari.starwars.R
 import io.github.janbarari.starwars.databinding.FragmentResidentsBinding
 import io.github.janbarari.starwars.domain.Planet
@@ -56,7 +55,7 @@ class ResidentsFragment : BaseFragment(), KodeinAware, GenericUriListener {
             return
         }
 
-        val adapter = GenericAdapter(requireContext(),viewModel.residents, this@ResidentsFragment)
+        val adapter = GenericAdapter(requireContext(), viewModel.residents, this@ResidentsFragment)
         adapter.addView(
             ResidentViewHolder::class.java,
             ResidentAdapterModel::class.java,
@@ -91,7 +90,6 @@ class ResidentsFragment : BaseFragment(), KodeinAware, GenericUriListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
-        viewModel.disposeResidents()
         viewModel.recyclerViewState = binding.recyclerview.layoutManager?.onSaveInstanceState()
     }
 
