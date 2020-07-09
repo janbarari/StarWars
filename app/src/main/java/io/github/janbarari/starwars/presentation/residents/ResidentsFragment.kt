@@ -50,13 +50,13 @@ class ResidentsFragment : BaseFragment(), KodeinAware, GenericUriListener {
         super.onViewCreated(view, savedInstanceState)
 
         val planet: Planet? = arguments?.getSerializable(PLANET_ARGUMENT_KEY) as Planet
+        viewModel.planet = planet
         if (planet == null) {
             findNavController().popBackStack()
             return
         }
 
-        val residents: ArrayList<GenericViewModel> = arrayListOf()
-        val adapter = GenericAdapter(requireContext(), residents, this@ResidentsFragment)
+        val adapter = GenericAdapter(requireContext(),viewModel.residents, this@ResidentsFragment)
         adapter.addView(
             ResidentViewHolder::class.java,
             ResidentAdapterModel::class.java,
@@ -73,10 +73,10 @@ class ResidentsFragment : BaseFragment(), KodeinAware, GenericUriListener {
             )
         }
 
-        viewModel.fetchResidents(planet)
-        viewModel.residents.observe(viewLifecycleOwner, Observer {
-            residents.add(it.toGenericViewModel())
-            adapter.notifyItemInserted(residents.size)
+        viewModel.fetchResidents()
+        viewModel.resident.observe(viewLifecycleOwner, Observer {
+            viewModel.residents.add(it.toGenericViewModel())
+            adapter.notifyItemInserted(viewModel.residents.size)
         })
 
         viewModel.error.observe(viewLifecycleOwner, Observer {
@@ -91,6 +91,7 @@ class ResidentsFragment : BaseFragment(), KodeinAware, GenericUriListener {
 
     override fun onDestroyView() {
         super.onDestroyView()
+        viewModel.disposeResidents()
         viewModel.recyclerViewState = binding.recyclerview.layoutManager?.onSaveInstanceState()
     }
 
