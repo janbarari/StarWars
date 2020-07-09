@@ -1,5 +1,5 @@
 # StarWars
- ![](starwars.gif)
+ ![](preview.gif)
 
 This project fetch information form an api, and uses the following technologies:
 
